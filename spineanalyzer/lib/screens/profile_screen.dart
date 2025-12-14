@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spineanalyzer/resources/strings.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String name;
@@ -8,16 +9,16 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Profil')),
+      appBar: AppBar(title: const Text(ProfileStrings.title)),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name: $name', style: const TextStyle(fontSize: 20)),
+            Text('${ProfileStrings.nameLabel}: $name', style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 16),
-            Text('Email: $email', style: const TextStyle(fontSize: 18)),
+            Text('${ProfileStrings.emailLabel}: $email', style: const TextStyle(fontSize: 18)),
           ],
         ),
       ),

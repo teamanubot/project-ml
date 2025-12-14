@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import 'package:spineanalyzer/resources/strings/analysis_strings.dart';
 import '../ml/straight_spine_detector.dart';
 import '../ml/spine_classification_helper.dart';
 
@@ -27,7 +28,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   double classificationConfidence = 0.0;
   final TextEditingController notesController = TextEditingController();
   bool isLoading = false;
-  String mlStatus = 'Initializing Straight Spine Analysis...';
+  String mlStatus = AnalysisStrings.initializing;
 
   @override
   void initState() {
@@ -42,19 +43,19 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       setState(() => isLoading = false);
     } catch (e) {
       setState(() => isLoading = false);
-      _showToast('Error loading image');
+      _showToast(AnalysisStrings.errorLoadImage);
     }
   }
 
   Future<void> _analyzeSpine() async {
-    setState(() { isLoading = true; mlStatus = 'Analyzing spine straightness...'; });
+    setState(() { isLoading = true; mlStatus = AnalysisStrings.analyzing; });
     try {
       final detector = StraightSpineDetector();
       final helper = SpineClassificationHelper();
       final img.Image? inputImage = originalImage;
       if (inputImage == null) {
         setState(() { isLoading = false; });
-        _showToast('No image to analyze');
+        _showToast(AnalysisStrings.errorNoImage);
         return;
       }
       final result = detector.detectStraightSpine(inputImage);
@@ -68,12 +69,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         classificationConfidence = classResult.confidence;
         processedImage = _createStraightSpineVisualization(inputImage, result.keypoints, result.cobbAngle);
         isAnalyzed = true;
-        mlStatus = 'Analysis Complete: ${result.linearityAnalysis.spineDescription} (${result.cobbAngle.toStringAsFixed(1)}°)';
+        mlStatus = '${AnalysisStrings.analysisComplete}: ${result.linearityAnalysis.spineDescription} (${result.cobbAngle.toStringAsFixed(1)}°)';
         isLoading = false;
       });
     } catch (e) {
       setState(() { isLoading = false; });
-      _showToast('Analysis failed. Please try again.');
+      _showToast(AnalysisStrings.errorAnalysisFailed);
     }
   }
 
@@ -90,7 +91,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('AI Spine Analysis - Accurate Detection')),
+      appBar: AppBar(title: const Text(AnalysisStrings.appBarTitle)),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -106,25 +107,25 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: isLoading ? null : _analyzeSpine,
-                      child: const Text('🔬 Analyze'),
+                      child: const Text(AnalysisStrings.analyzeButton),
                     ),
                     if (isAnalyzed) ...[
                       const SizedBox(height: 16),
-                      Text('Kemiringan Tulang: ${calculatedAngle.toStringAsFixed(1)}°'),
-                      Text('Confidence: ${(confidenceScore * 100).toStringAsFixed(1)}%'),
-                      Text('Classification: $classification (${(classificationConfidence * 100).toStringAsFixed(1)}%)'),
+                      Text('${AnalysisStrings.angleLabel}: ${calculatedAngle.toStringAsFixed(1)}°'),
+                      Text('${AnalysisStrings.confidenceLabel}: ${(confidenceScore * 100).toStringAsFixed(1)}%'),
+                      Text('${AnalysisStrings.classificationLabel}: $classification (${(classificationConfidence * 100).toStringAsFixed(1)}%)'),
                       if (processedImage != null)
                         Image.memory(Uint8List.fromList(img.encodeJpg(processedImage!))),
                       const SizedBox(height: 16),
                       TextField(
                         controller: notesController,
-                        decoration: const InputDecoration(labelText: 'Catatan'),
+                        decoration: const InputDecoration(labelText: AnalysisStrings.notesLabel),
                         maxLines: 3,
                       ),
                       const SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: () {}, // TODO: Implementasi simpan analisis
-                        child: const Text('💾 Save Analysis'),
+                        child: const Text(AnalysisStrings.saveButton),
                       ),
                     ],
                   ],

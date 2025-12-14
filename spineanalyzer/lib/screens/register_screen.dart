@@ -1,3 +1,4 @@
+import 'package:spineanalyzer/resources/strings.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -26,50 +27,49 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final confirmPassword = confirmPasswordController.text;
 
     if (name.isEmpty) {
-      _showError('Nama harus diisi');
+      _showError(ErrorStrings.nameEmpty);
       return;
     }
     if (email.isEmpty) {
-      _showError('Email harus diisi');
+      _showError(ErrorStrings.emailEmpty);
       return;
     }
     if (!_isValidEmail(email)) {
-      _showError('Format email tidak valid. Contoh: user@example.com');
+      _showError(ErrorStrings.emailFormat);
       return;
     }
     if (password.isEmpty) {
-      _showError('Password harus diisi');
+      _showError(ErrorStrings.passwordEmpty);
       return;
     }
     if (password.length < 6) {
-      _showError('Password minimal 6 karakter');
+      _showError(ErrorStrings.passwordShort);
       return;
     }
     if (confirmPassword.isEmpty) {
-      _showError('Konfirmasi password harus diisi');
+      _showError(ErrorStrings.confirmPasswordEmpty);
       return;
     }
     if (password != confirmPassword) {
-      _showError('Password tidak cocok');
+      _showError(ErrorStrings.passwordNotMatch);
       return;
     }
     setState(() => isLoading = true);
     final success = await widget.onRegister(name, email, password);
     setState(() => isLoading = false);
     if (!success) {
-      _showError('Registrasi gagal, silakan coba lagi atau email sudah terdaftar');
+      _showError(ErrorStrings.registerFail);
     } else {
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => AlertDialog(
-          title: const Text('Sukses'),
-          content: const Text('Pendaftaran akun berhasil'),
+          title: Text(SuccessStrings.title),
+          content: Text(SuccessStrings.register),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // Ambil user dari static var, lalu ke /home dengan argumen user
                 final user = RegisterScreen.lastRegisteredUser;
                 Navigator.of(context).pushReplacementNamed(
                   '/home',
@@ -78,7 +78,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       : null,
                 );
               },
-              child: const Text('OK'),
+              child: Text(Strings.okButton),
             ),
           ],
         ),
@@ -115,7 +115,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'SpineAnalyzer',
+                      Strings.appName,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Daftar Akun Pasien',
+                      RegisterStrings.title,
                       style: TextStyle(color: Colors.blueGrey[700], fontSize: 14),
                     ),
                   ],
@@ -142,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextField(
                         controller: nameController,
                         decoration: const InputDecoration(
-                          labelText: 'Nama',
+                          labelText: RegisterStrings.nameHint,
                           prefixIcon: Icon(Icons.person_outline),
                           border: OutlineInputBorder(),
                         ),
@@ -151,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextField(
                         controller: emailController,
                         decoration: const InputDecoration(
-                          labelText: 'Email',
+                          labelText: RegisterStrings.emailHint,
                           prefixIcon: Icon(Icons.email_outlined),
                           border: OutlineInputBorder(),
                         ),
@@ -161,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextField(
                         controller: passwordController,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: RegisterStrings.passwordHint,
                           prefixIcon: const Icon(Icons.lock_outline),
                           border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
@@ -177,7 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       TextField(
                         controller: confirmPasswordController,
                         decoration: InputDecoration(
-                          labelText: 'Konfirmasi Password',
+                          labelText: RegisterStrings.confirmPasswordHint,
                           prefixIcon: const Icon(Icons.lock_outline),
                           border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
@@ -201,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onPressed: isLoading ? null : _registerUser,
                           child: isLoading
                               ? const CircularProgressIndicator(color: Colors.white)
-                              : const Text('Daftar', style: TextStyle(fontSize: 16, color: Colors.white)),
+                              : Text(RegisterStrings.button, style: const TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -209,9 +209,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                           onTap: widget.onLoginTap,
-                          child: const Text(
-                            'Sudah punya akun? Masuk',
-                            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
+                          child: Text(
+                            RegisterStrings.loginPrompt,
+                            style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),

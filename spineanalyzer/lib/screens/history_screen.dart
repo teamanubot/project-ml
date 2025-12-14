@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spineanalyzer/resources/strings.dart';
 import 'package:intl/intl.dart';
 import '../services/api_service.dart';
 
@@ -75,13 +76,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      'History',
+                      HistoryStrings.title,
                       style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      'Berikut adalah riwayat analisis tulang belakang Anda.',
+                      HistoryStrings.subtitle,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
@@ -89,7 +90,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     if (isLoading)
                       const CircularProgressIndicator()
                     else if (analysisList.isEmpty)
-                      const Text('Data analysis tidak ada', style: TextStyle(color: Colors.grey))
+                      const Text(HistoryStrings.empty, style: TextStyle(color: Colors.grey))
                     else
                       ListView.builder(
                         shrinkWrap: true,
@@ -142,7 +143,7 @@ class AnalysisCard extends StatelessWidget {
   const AnalysisCard({Key? key, required this.item}) : super(key: key);
 
   String formatDateToWIB(String dateString) {
-    if (dateString.isEmpty) return 'Tanggal tidak tersedia';
+    if (dateString.isEmpty) return HistoryStrings.dateUnavailable;
     try {
       final inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
       final utcDate = inputFormat.parseUtc(dateString);
@@ -163,13 +164,13 @@ class AnalysisCard extends StatelessWidget {
 
   String getInterpretation(double angle) {
     if (angle < 10) {
-      return 'Normal';
+      return HistoryStrings.statusNormal;
     } else if (angle < 20) {
-      return 'Skoliosis Ringan';
+      return HistoryStrings.statusMild;
     } else if (angle < 30) {
-      return 'Skoliosis Sedang';
+      return HistoryStrings.statusModerate;
     } else {
-      return 'Skoliosis Berat';
+      return HistoryStrings.statusSevere;
     }
   }
 
@@ -193,13 +194,13 @@ class AnalysisCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Kemiringan: ${item.angle.toStringAsFixed(2)}°', style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+            Text('${HistoryStrings.angleLabel}: ${item.angle.toStringAsFixed(2)}°', style: TextStyle(color: color, fontWeight: FontWeight.bold)),
             const SizedBox(height: 4),
-            Text('Tanggal: ${formatDateToWIB(item.date)}'),
+            Text('${HistoryStrings.dateLabel}: ${formatDateToWIB(item.date)}'),
             const SizedBox(height: 4),
-            Text(item.notes.isNotEmpty ? 'Catatan: ${item.notes}' : 'Catatan: -'),
+            Text(item.notes.isNotEmpty ? '${HistoryStrings.notesLabel}: ${item.notes}' : '${HistoryStrings.notesLabel}: -'),
             const SizedBox(height: 4),
-            Text('Status: ${getInterpretation(item.angle)}', style: TextStyle(color: color)),
+            Text('${HistoryStrings.statusLabel}: ${getInterpretation(item.angle)}', style: TextStyle(color: color)),
           ],
         ),
       ),

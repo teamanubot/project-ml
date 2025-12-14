@@ -1,3 +1,4 @@
+import 'package:spineanalyzer/resources/strings.dart';
 
 import 'package:flutter/material.dart';
 
@@ -27,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          _selectedIndex == 2
-              ? 'Riwayat Analisis'
-              : 'Spine Analyzer',
+            _selectedIndex == 2
+              ? HomeStrings.historyTitle
+              : Strings.appName,
           style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1976D2), fontSize: 24),
         ),
         actions: [
@@ -55,15 +56,15 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: HomeStrings.homeTitle,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.camera_alt),
-            label: 'Scan', // Camera/Scan bar
+            label: HomeStrings.scanLabel,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'History',
+            label: HomeStrings.historyTitle,
           ),
         ],
         selectedItemColor: Color(0xFF1976D2),
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Selamat datang, ${widget.userName.isNotEmpty ? widget.userName : 'Pasien'}!',
+                        HomeStrings.welcome(widget.userName),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -141,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  'Apa itu Tulang Punggung?',
+                  HomeStrings.aboutSpineTitle,
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
                   textAlign: TextAlign.left,
                 ),
@@ -153,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  'Dampak Kemiringan Berlebihan',
+                  HomeStrings.impactTitle,
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF1976D2)),
                   textAlign: TextAlign.left,
                 ),
@@ -186,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Color(0xFF1976D2)),
-                title: const Text('Ambil Foto dengan Kamera'),
+                title: Text(HomeStrings.cameraOption),
                 onTap: () async {
                   Navigator.pop(context);
                   await Future.delayed(Duration.zero);
@@ -195,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.photo_library, color: Color(0xFF43A047)),
-                title: const Text('Pilih dari Galeri'),
+                title: Text(HomeStrings.galleryOption),
                 onTap: () async {
                   Navigator.pop(context);
                   await Future.delayed(Duration.zero);
@@ -216,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() => currentPhotoPath = photo.path);
         _openAnalysisScreen(imagePath: photo.path);
       } else {
-        _showToast('Tidak ada gambar diambil');
+        _showToast(HomeStrings.noImageTaken);
       }
     } catch (e) {
       _showToast('Gagal membuka kamera: $e');
@@ -229,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
       if (image != null) {
         _openAnalysisScreen(imageUri: image.path);
       } else {
-        _showToast('Tidak ada gambar dipilih');
+        _showToast(HomeStrings.noImageSelected);
       }
     } catch (e) {
       _showToast('Gagal membuka galeri: $e');
@@ -259,19 +260,19 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Apakah Anda yakin ingin logout?'),
+        title: Text(HomeStrings.logoutButton),
+        content: Text(HomeStrings.logoutConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Tidak'),
+            child: Text(HomeStrings.noButton),
           ),
           TextButton(
             onPressed: () {
               // TODO: Implement logout logic (clear session, navigate to login)
               Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
             },
-            child: const Text('Ya'),
+            child: Text(HomeStrings.yesButton),
           ),
         ],
       ),

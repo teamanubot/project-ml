@@ -1,3 +1,4 @@
+import 'package:spineanalyzer/resources/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -20,14 +21,14 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = emailController.text.trim();
     final password = passwordController.text;
     if (email.isEmpty || password.isEmpty) {
-      _showToast('Mohon isi email dan password');
+      _showToast(ErrorStrings.general);
       return;
     }
     setState(() => isLoading = true);
     final success = await widget.onLogin(email, password);
     setState(() => isLoading = false);
     if (!success) {
-      _showToast('Email atau password salah');
+      _showToast(ErrorStrings.login);
     }
   }
 
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'SpineAnalyzer',
+                      Strings.appName,
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Aplikasi Analisis Tulang Belakang',
+                      Strings.appDesc,
                       style: TextStyle(color: Colors.blueGrey[700], fontSize: 14),
                     ),
                   ],
@@ -83,10 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       TextField(
                         controller: emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                          prefixIcon: Icon(Icons.email_outlined),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: RegisterStrings.emailHint,
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          border: const OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       TextField(
                         controller: passwordController,
                         decoration: InputDecoration(
-                          labelText: 'Password',
+                          labelText: RegisterStrings.passwordHint,
                           prefixIcon: const Icon(Icons.lock_outline),
                           border: const OutlineInputBorder(),
                           suffixIcon: IconButton(
@@ -118,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: isLoading ? null : _loginUser,
                           child: isLoading
                               ? const CircularProgressIndicator(color: Colors.white)
-                              : const Text('Login', style: TextStyle(fontSize: 16, color: Colors.white)),
+                              : Text('Login', style: const TextStyle(fontSize: 16, color: Colors.white)),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -126,9 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                           onTap: widget.onRegisterTap,
-                          child: const Text(
-                            'Belum punya akun? Daftar',
-                            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
+                          child: Text(
+                            RegisterStrings.prompt,
+                            style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),

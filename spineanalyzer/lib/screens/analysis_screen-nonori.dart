@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
+import 'package:spineanalyzer/resources/strings/analysis_strings_nonori.dart';
 import '../ml/ml_model_manager.dart';
 
 
@@ -13,7 +14,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   double classificationConfidence = 0.0;
   final TextEditingController notesController = TextEditingController();
   bool isLoading = false;
-  String mlStatus = 'Memuat model Machine Learning...';
+  String mlStatus = AnalysisStringsNonOri.initializing;
   SpineAnalysisResult? analysisResult;
 
   @override
@@ -23,9 +24,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   }
 
   Future<void> _initML() async {
-    setState(() { mlStatus = 'Memuat model Machine Learning...'; isLoading = true; });
+    setState(() { mlStatus = AnalysisStringsNonOri.initializing; isLoading = true; });
     await MLModelManager().loadAllModels();
-    setState(() { mlStatus = 'Model siap. Memuat gambar...'; });
+    setState(() { mlStatus = AnalysisStringsNonOri.modelReady; });
     await _loadImage();
   }
 
@@ -36,17 +37,17 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
       setState(() => isLoading = false);
     } catch (e) {
       setState(() => isLoading = false);
-      _showToast('Error loading image');
+      _showToast(AnalysisStringsNonOri.errorLoadImage);
     }
   }
 
   Future<void> _analyzeSpine() async {
-    setState(() { isLoading = true; mlStatus = 'Analisis AI sedang berjalan...'; });
+    setState(() { isLoading = true; mlStatus = AnalysisStringsNonOri.analyzing; });
     try {
       final img.Image? inputImage = originalImage;
       if (inputImage == null) {
         setState(() { isLoading = false; });
-        _showToast('Tidak ada gambar untuk dianalisis');
+        _showToast(AnalysisStringsNonOri.errorNoImage);
         return;
       }
       final result = await MLModelManager().analyzeSpine(inputImage);
@@ -57,12 +58,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         classificationConfidence = result.classificationConfidence;
         analysisResult = result;
         isAnalyzed = true;
-        mlStatus = 'Analisis selesai: ${result.classification} (${result.primaryAngle.toStringAsFixed(1)}°)';
+        mlStatus = '${AnalysisStringsNonOri.analysisComplete}: ${result.classification} (${result.primaryAngle.toStringAsFixed(1)}°)';
         isLoading = false;
       });
     } catch (e) {
       setState(() { isLoading = false; });
-      _showToast('Analisis gagal. Silakan coba lagi.');
+      _showToast(AnalysisStringsNonOri.errorAnalysisFailed);
     }
   }
 
@@ -73,7 +74,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('AI Spine Analysis - Accurate Detection')),
+      appBar: AppBar(title: const Text(AnalysisStringsNonOri.appBarTitle)),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
@@ -89,26 +90,26 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: isLoading ? null : _analyzeSpine,
-                      child: const Text('🔬 Analyze'),
+                      child: const Text(AnalysisStringsNonOri.analyzeButton),
                     ),
                     if (isAnalyzed && analysisResult != null) ...[
                       const SizedBox(height: 16),
-                      Text('Kemiringan Tulang: ${calculatedAngle.toStringAsFixed(1)}°'),
-                      Text('Confidence: ${(confidenceScore * 100).toStringAsFixed(1)}%'),
-                      Text('Classification: $classification (${(classificationConfidence * 100).toStringAsFixed(1)}%)'),
+                      Text('${AnalysisStringsNonOri.angleLabel}: ${calculatedAngle.toStringAsFixed(1)}°'),
+                      Text('${AnalysisStringsNonOri.confidenceLabel}: ${(confidenceScore * 100).toStringAsFixed(1)}%'),
+                      Text('${AnalysisStringsNonOri.classificationLabel}: $classification (${(classificationConfidence * 100).toStringAsFixed(1)}%)'),
                       const SizedBox(height: 8),
-                      Text('Assessment: ${analysisResult!.assessment.severity}'),
-                      Text('Rekomendasi: ${analysisResult!.assessment.recommendations}'),
+                      Text('${AnalysisStringsNonOri.assessmentLabel}: ${analysisResult!.assessment.severity}'),
+                      Text('${AnalysisStringsNonOri.recommendationLabel}: ${analysisResult!.assessment.recommendations}'),
                       const SizedBox(height: 16),
                       TextField(
                         controller: notesController,
-                        decoration: const InputDecoration(labelText: 'Catatan'),
+                        decoration: const InputDecoration(labelText: AnalysisStringsNonOri.notesLabel),
                         maxLines: 3,
                       ),
                       const SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: () {}, // TODO: Implementasi simpan analisis
-                        child: const Text('💾 Simpan Analisis'),
+                        child: const Text(AnalysisStringsNonOri.saveButton),
                       ),
                     ],
                   ],
