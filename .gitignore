@@ -1,12 +1,32 @@
-# Flutter/Dart/Pub related
-.dart_tool/
-.packages
-.pub-cache/
-build/
-.flutter-plugins
-.flutter-plugins-dependencies
-.melos_tool/
-pubspec.lock
+# === FLUTTER/DART/ANDROID (spineanalyzer) ===
+spineanalyzer/.dart_tool/
+spineanalyzer/.packages
+spineanalyzer/.pub-cache/
+spineanalyzer/build/
+spineanalyzer/.flutter-plugins
+spineanalyzer/.flutter-plugins-dependencies
+spineanalyzer/.melos_tool/
+spineanalyzer/pubspec.lock
+
+# Android/iOS/Mac/Linux/Windows build outputs (spineanalyzer)
+spineanalyzer/android/.gradle/
+spineanalyzer/android/app/build/
+spineanalyzer/ios/Pods/
+spineanalyzer/ios/Runner.xcworkspace/
+spineanalyzer/ios/Flutter/Flutter.framework/
+spineanalyzer/ios/Flutter/Flutter.podspec
+spineanalyzer/ios/Flutter/Generated.xcconfig
+spineanalyzer/ios/Flutter/ephemeral/
+spineanalyzer/macos/Flutter/ephemeral/
+spineanalyzer/macos/Pods/
+spineanalyzer/macos/Runner.xcworkspace/
+spineanalyzer/macos/Flutter/Generated.xcconfig
+spineanalyzer/macos/Flutter/Flutter.framework/
+spineanalyzer/macos/Flutter/Flutter.podspec
+spineanalyzer/linux/flutter/
+spineanalyzer/linux/build/
+spineanalyzer/windows/flutter/
+spineanalyzer/windows/build/
 
 # VS Code/IDE
 .vscode/
@@ -17,46 +37,38 @@ pubspec.lock
 .DS_Store
 Thumbs.db
 
-# Android/iOS
-android/.gradle/
-android/app/build/
-ios/Pods/
-ios/Runner.xcworkspace/
-ios/Flutter/Flutter.framework/
-ios/Flutter/Flutter.podspec
-ios/Flutter/Generated.xcconfig
-ios/Flutter/ephemeral/
-macos/Flutter/ephemeral/
-macos/Pods/
-macos/Runner.xcworkspace/
-macos/Flutter/Generated.xcconfig
-macos/Flutter/Flutter.framework/
-macos/Flutter/Flutter.podspec
-
-# Linux/Windows
-linux/flutter/
-linux/build/
-windows/flutter/
-windows/build/
-
 # Test outputs
 coverage/
+spineanalyzer/coverage/
 
-# Python/Backend
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-env/
-venv/
-ENV/
-.venv/
-.Python
+# === FASTAPI-BACKEND (python) ===
+fastapi-backend/app/venv/
+fastapi-backend/app/__pycache__/
+fastapi-backend/app/*.pyc
+fastapi-backend/app/*.pyo
+fastapi-backend/app/*.pyd
+fastapi-backend/env/
+fastapi-backend/venv/
+fastapi-backend/.venv/
+fastapi-backend/ENV/
+fastapi-backend/.Python
+fastapi-backend/db/data/
+fastapi-backend/db/conf.d/
+fastapi-backend/instance/
+fastapi-backend/*.sqlite3
+fastapi-backend/*.db
+fastapi-backend/*.log
+fastapi-backend/app/requirements.txt.bak
 
-# FastAPI/Database
-*.sqlite3
-*.db
-instance/
+# Ignore model files (jika hasil training, bukan source)
+fastapi-backend/ya/assets/*.tflite
+fastapi-backend/ya/assets/*.h5
+fastapi-backend/ya/assets/*.pb
+
+# Ignore image test output, tapi bukan input contoh
+fastapi-backend/img/*.png
+!fastapi-backend/img/normal.png
+!fastapi-backend/img/lordosis.png
 
 # Jupyter
 .ipynb_checkpoints/
@@ -70,3 +82,7 @@ node_modules/
 # Lain-lain
 *.swp
 *.swo
+
+# === EXAMPLES/ENV/CONFIG (uncomment if needed) ===
+# !fastapi-backend/.env.example
+# !fastapi-backend/app/settings.example.py
