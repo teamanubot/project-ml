@@ -1,0 +1,72 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.packages
+.pub-cache/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+pubspec.lock
+
+# VS Code/IDE
+.vscode/
+.idea/
+*.iml
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Android/iOS
+android/.gradle/
+android/app/build/
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/Runner.xcworkspace/
+macos/Flutter/Generated.xcconfig
+macos/Flutter/Flutter.framework/
+macos/Flutter/Flutter.podspec
+
+# Linux/Windows
+linux/flutter/
+linux/build/
+windows/flutter/
+windows/build/
+
+# Test outputs
+coverage/
+
+# Python/Backend
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+ENV/
+.venv/
+.Python
+
+# FastAPI/Database
+*.sqlite3
+*.db
+instance/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Log files
+*.log
+
+# Node/npm (jika ada)
+node_modules/
+
+# Lain-lain
+*.swp
+*.swo
