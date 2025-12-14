@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../services/api_service.dart';
@@ -98,9 +99,7 @@ class _ManageAnalysesScreenState extends State<ManageAnalysesScreen> {
   }
 
   void _exportAnalyses() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Export feature coming soon')),
-    );
+    CustomSnackbar.show(context, message: 'Export feature coming soon', type: SnackbarType.info);
   }
 
   void _clearFilter() {
@@ -133,9 +132,7 @@ class _ManageAnalysesScreenState extends State<ManageAnalysesScreen> {
                 analysisList.removeAt(index);
               });
               Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Analysis deleted')),
-              );
+              CustomSnackbar.show(context, message: 'Analysis deleted', type: SnackbarType.success);
             },
           ),
         ],

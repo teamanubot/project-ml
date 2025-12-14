@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import '../widgets/custom_snackbar.dart';
 import 'package:image/image.dart' as img;
 import 'package:spineanalyzer/resources/strings/analysis_strings.dart';
 import '../ml/straight_spine_detector.dart';
@@ -85,7 +86,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   }
 
   void _showToast(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    CustomSnackbar.show(context, message: msg, type: SnackbarType.error);
   }
 
   @override

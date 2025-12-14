@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:spineanalyzer/resources/strings.dart';
 import 'package:intl/intl.dart';
 import '../services/api_service.dart';
+
+import '../resources/strings/history_strings.dart';
+
+
 
 class HistoryScreen extends StatefulWidget {
   final int userId;

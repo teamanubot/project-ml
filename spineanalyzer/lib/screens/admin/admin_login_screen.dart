@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 import '../../services/api_service.dart';
 import 'admin_dashboard_screen.dart';
@@ -62,15 +63,11 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   void _showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   void _showForgotPasswordDialog() {

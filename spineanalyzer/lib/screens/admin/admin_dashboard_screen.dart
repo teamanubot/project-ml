@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 import '../../services/api_service.dart'; // Your database helper/service
 import 'manage_users_screen.dart';
@@ -37,9 +38,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   void _performBackup() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Backup feature coming soon')),
-    );
+    CustomSnackbar.show(context, message: 'Backup feature coming soon', type: SnackbarType.info);
   }
 
   void _logout() async {

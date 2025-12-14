@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:spineanalyzer/resources/strings.dart';
+import '../resources/strings/profile_strings.dart';
 
 class ProfileScreen extends StatelessWidget {
   final String name;

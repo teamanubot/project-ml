@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../../services/api_service.dart';
@@ -120,9 +121,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }
 
   void _showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   Widget _buildProgressBar(String label, int percent, Color color) {

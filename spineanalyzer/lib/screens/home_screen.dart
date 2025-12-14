@@ -1,6 +1,9 @@
-import 'package:spineanalyzer/resources/strings.dart';
 
 import 'package:flutter/material.dart';
+import '../widgets/custom_snackbar.dart';
+import '../resources/strings/strings.dart';
+import '../resources/strings/home_strings.dart';
+import '../resources/strings/error_strings.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'history_screen.dart';
@@ -16,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DateTime? _lastBackPressed;
   int _selectedIndex = 0;
   final ImagePicker _picker = ImagePicker();
   String? currentPhotoPath;
@@ -23,53 +27,68 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-            _selectedIndex == 2
-              ? HomeStrings.historyTitle
-              : Strings.appName,
-          style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1976D2), fontSize: 24),
+    return WillPopScope(
+      onWillPop: () async {
+        final now = DateTime.now();
+        if (_lastBackPressed == null || now.difference(_lastBackPressed!) > const Duration(seconds: 2)) {
+          _lastBackPressed = now;
+          CustomSnackbar.show(
+            context,
+            message: Strings.backToExitMessage,
+            type: SnackbarType.info,
+          );
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: Text(
+              _selectedIndex == 2
+                ? HomeStrings.historyTitle
+                : Strings.appName,
+            style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1976D2), fontSize: 24),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout, color: Color(0xFF1976D2)),
+              onPressed: _showLogoutDialog,
+            ),
+          ],
+          iconTheme: const IconThemeData(color: Color(0xFF1976D2)),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Color(0xFF1976D2)),
-            onPressed: _showLogoutDialog,
-          ),
-        ],
-        iconTheme: const IconThemeData(color: Color(0xFF1976D2)),
-      ),
-      body: _buildBody(),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: (index) async {
-          if (index == 1) {
-            await _handleCameraBar();
-          } else {
-            setState(() {
-              _selectedIndex = index;
-            });
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: HomeStrings.homeTitle,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt),
-            label: HomeStrings.scanLabel,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: HomeStrings.historyTitle,
-          ),
-        ],
-        selectedItemColor: Color(0xFF1976D2),
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
+        body: _buildBody(),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) async {
+            if (index == 1) {
+              await _handleCameraBar();
+            } else {
+              setState(() {
+                _selectedIndex = index;
+              });
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: HomeStrings.homeTitle,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.camera_alt),
+              label: HomeStrings.scanLabel,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              label: HomeStrings.historyTitle,
+            ),
+          ],
+          selectedItemColor: Color(0xFF1976D2),
+          unselectedItemColor: Colors.grey,
+          showUnselectedLabels: true,
+        ),
       ),
     );
   }
@@ -136,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 18),
                 Text(
-                  'Spine Analyzer adalah aplikasi untuk membantu Anda memeriksa kemiringan tulang punggung (skoliosis) secara mudah dan cepat menggunakan teknologi AI. Cukup foto punggung Anda, aplikasi akan mengidentifikasi tingkat kemiringan secara otomatis.',
+                  HomeStrings.aboutApp,
                   style: const TextStyle(fontSize: 15, color: Colors.black87, height: 1.5),
                   textAlign: TextAlign.left,
                 ),
@@ -148,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Tulang punggung (spine) adalah struktur utama penopang tubuh manusia yang terdiri dari rangkaian tulang kecil (vertebrae) dan berfungsi melindungi saraf pusat serta menjaga postur dan pergerakan tubuh.',
+                  HomeStrings.aboutSpine,
                   style: const TextStyle(fontSize: 15, color: Colors.black87, height: 1.5),
                   textAlign: TextAlign.left,
                 ),
@@ -160,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Kemiringan tulang punggung yang tidak normal (skoliosis) dapat menyebabkan nyeri punggung, gangguan pernapasan, keterbatasan gerak, hingga masalah psikologis. Deteksi dan penanganan dini sangat penting untuk mencegah komplikasi lebih lanjut.',
+                  HomeStrings.impact,
                   style: const TextStyle(fontSize: 15, color: Colors.black87, height: 1.5),
                   textAlign: TextAlign.left,
                 ),
@@ -281,6 +300,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   void _showToast(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    CustomSnackbar.show(context, message: msg, type: SnackbarType.error);
   }
 }

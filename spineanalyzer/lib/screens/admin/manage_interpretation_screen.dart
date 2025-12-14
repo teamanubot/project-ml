@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ManageInterpretationScreen extends StatefulWidget {
@@ -294,9 +295,7 @@ class _ManageInterpretationScreenState extends State<ManageInterpretationScreen>
   }
 
   void _showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/api_service.dart';
@@ -50,18 +51,14 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('auto_backup', value);
     setState(() => autoBackup = value);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Auto backup ${value ? 'enabled' : 'disabled'}')),
-    );
+    CustomSnackbar.show(context, message: 'Auto backup ${value ? 'enabled' : 'disabled'}', type: SnackbarType.info);
   }
 
   void _onNotificationsChanged(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('notifications', value);
     setState(() => notifications = value);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Notifications ${value ? 'enabled' : 'disabled'}')),
-    );
+    CustomSnackbar.show(context, message: 'Notifications ${value ? 'enabled' : 'disabled'}', type: SnackbarType.info);
   }
 
   void _showChangePasswordDialog() {
@@ -314,9 +311,7 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
   }
 
   void _showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   @override

@@ -4,4 +4,5 @@ class Strings {
   static const okButton = 'OK';
   static const saveButton = 'Simpan';
   static const logoutButton = 'Keluar';
+  static const String backToExitMessage = 'Tekan tombol kembali sekali lagi untuk keluar aplikasi';
 }

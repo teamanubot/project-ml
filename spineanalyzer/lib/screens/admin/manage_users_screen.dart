@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../widgets/custom_snackbar.dart';
 import 'package:provider/provider.dart';
 import '../../services/api_service.dart';
 
@@ -132,9 +133,7 @@ class _ManageUsersScreenState extends State<ManageUsersScreen> {
   }
 
   void _showToast(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    CustomSnackbar.show(context, message: message, type: SnackbarType.error);
   }
 
   @override
